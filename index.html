@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Random Team Generator</title>
+</head>
+<body>
+	<h1>Random Team Generator</h1>
+	<p>Enter the names of the people you want to group together, separated by commas:</p>
+	<textarea id="nameList"></textarea>
+	<br>
+	<button onclick="generateTeams()">Generate Teams</button>
+	<br><br>
+	<div id="teamList"></div>
+	<script>
+		function generateTeams() {
+			var names = document.getElementById("nameList").value.split(",");
+			var numNames = names.length;
+			var teams = [];
+			var teamNum = Math.ceil(numNames / 3);
+			for (var i = 0; i < teamNum; i++) {
+				teams.push([]);
+			}
+
+			// Shuffle names
+			for (var i = numNames - 1; i > 0; i--) {
+				var j = Math.floor(Math.random() * (i + 1));
+				var temp = names[i];
+				names[i] = names[j];
+				names[j] = temp;
+			}
+
+			// Divide into teams
+			while (names.length > 0) {
+				for (var i = 0; i < teamNum; i++) {
+					if (names.length === 0) break;
+					teams[i].push(names.shift());
+				}
+			}
+
+			// Output teams
+			var outputHtml = "";
+			for (var i = 0; i < teamNum; i++) {
+				outputHtml += "<h3>Team " + (i+1) + "</h3>";
+				outputHtml += "<ul>";
+				for (var j = 0; j < teams[i].length; j++) {
+					outputHtml += "<li>" + teams[i][j] + "</li>";
+				}
+				outputHtml += "</ul>";
+			}
+			document.getElementById("teamList").innerHTML = outputHtml;
+		}
+	</script>
+</body>
+</html>
